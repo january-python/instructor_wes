@@ -1,0 +1,24 @@
+.gold {
+  padding: 10px;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+.locations {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.location {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid black;
+  width: 350px;
+}
+
+.activities {
+  margin-top: 20px;
+  height: 250px;
+  overflow-y: auto;
+  border: 1px solid black;
+}

@@ -4,15 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" 
+   href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" type="text/css" 
+   href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <title>Document</title>
 </head>
 <body>
-  <h1>Hello World</h1>
-  {% for location in locations %}
-    <div class="location">
-      <h2>{{ location['name'] }}</h2>
-      <p>Between {{ location['min_gold'] }} and {{ location['max_gold'] }} gold!</p>
+  <div class="container">
+    <h1>Hello Wes!</h1>
+    <div class="gold">
+      Gold Amount: {{ user['total_gold'] }}
     </div>
-  {% endfor %}
+    <a href="/logout" class="button">Logout</a>
+    <div class="locations">
+      {% for location in locations %}
+        <div class="location">
+          <form action="/process_gold" method="post">
+            <h2>{{ location['name'] }}</h2>
+            <p>Between {{ location['min_gold'] }} and {{ location['max_gold'] }} gold!</p>
+            <input type="hidden" name="location" value="{{ location['id'] }}">
+            <input type="submit" value="Visit {{ location['name'] }}">
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="activities">
+      <p>Earned stuff at stuff</p>
+      <p>Earned stuff at stuff</p>
+      <p>Earned stuff at stuff</p>
+    </div>
+  </div>
 </body>
 </html>
