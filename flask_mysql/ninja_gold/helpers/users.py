@@ -65,3 +65,13 @@ def get_by_id(user_id):
   }
   users = db.query_db(query, data)
   return users[0]
+
+def update_gold(user_id, gold):
+  db = connectToMySQL(SCHEMA)
+  query = "UPDATE users SET total_gold = total_gold + %(new_gold)s WHERE id=%(id)s;"
+  data = {
+    "new_gold": gold,
+    "id": user_id
+  }
+  db.query_db(query, data)
+  return

@@ -18,11 +18,21 @@ def index():
   return render_template('index.html',
     locations=locations.all(),
     user=users.get_by_id(session['user_id']),
+    activities=activities.get_all_with_user_id(session['user_id'])
   )
 
-@app.route('/process_gold')
+@app.route('/process_gold', methods=['POST'])
 def process():
-  pass
+  # get the min and max gold amount from the location (form['location_id'])
+  # calculate gold amount
+    # create a random integer between min and max
+  gold_amt = locations.calculate_gold(request.form['location'])
+  # Create an activity using location_id, user_id, gold_amt
+  activities.create(request.form['location'], session['user_id'], gold_amt)
+  # Update the user's current gold_total
+  users.update_gold(session['user_id'], gold_amt)
+  # Redirect to index page
+  return redirect('/')
 
 @app.route('/users/new')
 def users_new():

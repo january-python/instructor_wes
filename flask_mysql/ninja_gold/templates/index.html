@@ -31,9 +31,13 @@
       {% endfor %}
     </div>
     <div class="activities">
-      <p>Earned stuff at stuff</p>
-      <p>Earned stuff at stuff</p>
-      <p>Earned stuff at stuff</p>
+      {% for activity in activities %}
+        {% if activity['gold'] > 0 %}
+          <p class="green">Earned {{ activity['gold'] }} from {{ activity['location'] }} at {{ activity['date'].strftime('%m/%d/%y') }}</p>
+        {% else %}
+          <p class="red">Lost {{ activity['gold'] }} from {{ activity['location'] }} at {{ activity['date'].strftime('%d/%m/%y') }}</p>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
 </body>
