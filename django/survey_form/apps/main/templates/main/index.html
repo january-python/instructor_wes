@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" 
+   href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" type="text/css" 
+   href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Survey Form!</h1>
+    <form action="/process/" method="post">
+      {% csrf_token %}
+      <label for="full_name">Name:</label>
+      <input type="text" name="full_name" placeholder="Vanilla Ice">
+      <label for="location">Location:</label>
+      <select name="location" id="">
+        <option value="San Jose">San Jose</option>
+        <option value="Burbank">Burbank</option>
+        <option value="Denver">Denver</option>
+        <option value="Seattle">Seattle</option>
+      </select>
+      <label for="favorite_language">Favorite Language:</label>
+      <select name="favorite_language" id="">
+        <option value="JavaScript">JavaScript</option>
+        <option value="Python">Python</option>
+        <option value="C#">C#</option>
+        <option value="Ruby">Ruby</option>
+      </select>
+      <input type="submit" value="Submit!">
+    </form>
+  </div>
+</body>
+</html>
