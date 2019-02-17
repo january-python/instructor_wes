@@ -24,7 +24,20 @@ def create(req):
     return redirect('tweets:index')
 
 def login(req):
-    pass
+    # take form information
+    # print(req.POST)
+    # send information to models to check for errors
+    valid, result = User.objects.login(req.POST)
+    # if errors
+    if not valid:
+        # display error messages
+        messages.error(req, result)
+        return redirect('users:new')
+
+    # log user in
+    req.session['user_id'] = result
+    return redirect('tweets:index')
 
 def logout(req):
-    pass
+    req.session.clear()
+    return redirect('users:new')

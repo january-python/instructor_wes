@@ -37,6 +37,7 @@
     </form>
     <h2>Login</h2>
     <form action="/users/login/" method="post">
+      {% csrf_token %}
       <label for="email">Email:</label>
       <input type="text" name="email" placeholder="vanillaice@yahoo.com">
       <label for="password">Password:</label>
