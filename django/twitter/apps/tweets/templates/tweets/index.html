@@ -8,12 +8,41 @@
    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
   <link rel="stylesheet" type="text/css" 
    href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-  <title>Home</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static  'tweets/styles/style.css' %}">
+  <title>Twitter</title>
 </head>
 <body>
   <div class="container">
-    <h1>Successfully Reached Home Page</h1>
+    <h1>Hello, {{ user.username }}</h1>
     <a href="{% url 'users:logout' %}" class="button">Logout</a>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <form action="{% url 'tweets:create' %}" method="post">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Your tweet here..." cols="30" rows="5"></textarea>
+      <input type="submit" value="Tweet!">
+    </form>
+    <div class="feed">
+      <h2>Your Twitter Feed:</h2>
+      {% for tweet in tweets %}
+        <div class="tweet">
+          <h3>{{ tweet.creator.username }}</h3>
+          <p>{{ tweet.content }}</p>
+          <h4>{{ tweet.users_liked.count }}</h4>
+          {% if user in tweet.users_liked.all %}
+            <a href="{% url 'tweets:like' tweet.id %}" class="button">Unlike</a>
+          {% else %}
+            <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </body>
 </html>

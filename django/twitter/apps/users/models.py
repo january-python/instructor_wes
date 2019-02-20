@@ -62,6 +62,9 @@ class User(models.Model):
     
     def __repr__(self):
         return "<User: %s>" % self.username
+    
+    def __str__(self):
+        return "<User: %s>" % self.username
 
 class Follower(models.Model):
     following = models.ForeignKey(User, related_name="followeds")
