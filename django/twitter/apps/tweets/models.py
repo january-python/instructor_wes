@@ -24,7 +24,11 @@ class TweetManager(models.Manager):
         user = User.objects.get(id=user_id)
         tweet = Tweet.objects.get(id=tweet_id)
         user.liked_tweets.add(tweet)
-        user.save()
+    
+    def remove_like(self, user_id, tweet_id):
+        user = User.objects.get(id=user_id)
+        tweet = Tweet.objects.get(id=tweet_id)
+        user.liked_tweets.remove(tweet)
 
 class Tweet(models.Model):
     content = models.CharField(max_length=255)

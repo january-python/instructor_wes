@@ -15,6 +15,7 @@
 <body>
   <div class="container">
     <h1>Hello, {{ user.username }}</h1>
+    <a href="{% url 'users:index' %}" class="button">Users</a>
     <a href="{% url 'users:logout' %}" class="button">Logout</a>
     {% if messages %}
       <ul class="messages">
@@ -32,11 +33,11 @@
       <h2>Your Twitter Feed:</h2>
       {% for tweet in tweets %}
         <div class="tweet">
-          <h3>{{ tweet.creator.username }}</h3>
+          <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
           <p>{{ tweet.content }}</p>
           <h4>{{ tweet.users_liked.count }}</h4>
           {% if user in tweet.users_liked.all %}
-            <a href="{% url 'tweets:like' tweet.id %}" class="button">Unlike</a>
+            <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
           {% else %}
             <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
           {% endif %}

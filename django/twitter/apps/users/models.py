@@ -66,6 +66,24 @@ class User(models.Model):
     def __str__(self):
         return "<User: %s>" % self.username
 
+class FollowerManager(models.Manager):
+    def easy_create(self, followee_id, follower_id):
+        follower = User.objects.get(id=follower_id)
+        followee = User.objects.get(id=followee_id)
+        existing_relationships = Follower.objects.filter(user_from=follower).filter(user_to=followee)
+        if not existing_relationships:
+            Follower.objects.create(
+                user_from = follower,
+                user_to = followee,
+            )
+
 class Follower(models.Model):
-    following = models.ForeignKey(User, related_name="followeds")
-    followed_by = models.ForeignKey(User, related_name="followers")
+    user_from = models.ForeignKey(User, related_name="following_references")
+    user_to = models.ForeignKey(User, related_name="follower_references")
+    objects = FollowerManager()
+
+    def __repr__(self):
+        return f"<Followee: {self.user_to}, Follower: {self.user_from}>"
+    
+    def __str__(self):
+        return f"<Followee: {self.user_to}, Follower: {self.user_from}>"
