@@ -1,49 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" type="text/css" 
-   href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
-  <link rel="stylesheet" type="text/css" 
-   href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+{% extends './layout.html' %}
+{% block head %}
   {% load static %}
   <link rel="stylesheet" href="{% static  'tweets/styles/style.css' %}">
-  <title>Twitter</title>
-</head>
-<body>
-  <div class="container">
-    <h1>Hello, {{ user.username }}</h1>
-    <a href="{% url 'users:index' %}" class="button">Users</a>
-    <a href="{% url 'users:logout' %}" class="button">Logout</a>
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    <form action="{% url 'tweets:create' %}" method="post">
-      {% csrf_token %}
-      <textarea name="content" placeholder="Your tweet here..." cols="30" rows="5"></textarea>
-      <input type="submit" value="Tweet!">
-    </form>
-    <div class="feed">
-      <h2>Your Twitter Feed:</h2>
-      {% for tweet in tweets %}
-        <div class="tweet">
-          <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
-          <p>{{ tweet.content }}</p>
-          <h4>{{ tweet.users_liked.count }}</h4>
-          {% if user in tweet.users_liked.all %}
-            <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
-          {% else %}
-            <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
-          {% endif %}
-        </div>
+{% endblock %}
+{% block title %}Twitter{% endblock %}
+{% block header %}Hello, {{ user.username }}{% endblock %}
+{% block body %}
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
       {% endfor %}
-    </div>
+    </ul>
+  {% endif %}
+  <form action="{% url 'tweets:create' %}" method="post">
+    {% csrf_token %}
+    <textarea name="content" placeholder="Your tweet here..." cols="30" rows="5"></textarea>
+    <input type="submit" value="Tweet!">
+  </form>
+  <div class="feed">
+    <h2>Your Twitter Feed:</h2>
+    {% for tweet in tweets %}
+      <div class="tweet">
+        <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
+        <p>{{ tweet.content }}</p>
+        <h4>{{ tweet.users_liked.count }}</h4>
+        {% if user in tweet.users_liked.all %}
+          <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
+        {% else %}
+          <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
-</body>
-</html>
+{% endblock %}
