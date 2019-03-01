@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.db.models import Q
+from django.core import serializers
+import json
 from .models import Tweet
 from ..users.models import User
 
@@ -23,6 +25,28 @@ def create(req):
     else:
         Tweet.objects.easy_create(req.POST, req.session['user_id'])
     return redirect('tweets:index')
+
+def create_ajax(req):
+    errors = Tweet.objects.validate(req.POST)
+    if errors:
+        context = {
+            'error_list': errors
+        }
+        return render(req, 'tweets/index_errors.html', context, status=400)
+    else:
+        context = {
+            'tweet': Tweet.objects.easy_create(req.POST, req.session['user_id'])
+        }
+    return render(req, 'tweets/tweet.html', context)
+
+def create_json(req):
+    # this is unfinished, we'd need to custom tailor the return information so we can easily create the html on the js side of things
+    errors = Tweet.objects.validate(req.POST)
+    if errors:
+        return HttpResponse(json.dumps(errors), status=400, content_type="application/json")
+    
+    tweet = Tweet.objects.easy_create(req.POST, req.session['user_id'])
+    return HttpResponse(serializers.serialize('json', [tweet,]), status=200, content_type="application/json")
 
 def like(req, tweet_id):
     Tweet.objects.add_like(req.session['user_id'], tweet_id)

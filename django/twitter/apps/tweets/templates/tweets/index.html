@@ -2,6 +2,7 @@
 {% block head %}
   {% load static %}
   <link rel="stylesheet" href="{% static  'tweets/styles/style.css' %}">
+  <script src="{% static 'tweets/scripts/index.js' %}"></script>
 {% endblock %}
 {% block title %}Twitter{% endblock %}
 {% block header %}Hello, {{ user.username }}{% endblock %}
@@ -13,24 +14,27 @@
       {% endfor %}
     </ul>
   {% endif %}
-  <form action="{% url 'tweets:create' %}" method="post">
+  <div id="ajax-errors"></div>
+  <form action="{% url 'tweets:create' %}" method="post" id="create-tweet">
     {% csrf_token %}
     <textarea name="content" placeholder="Your tweet here..." cols="30" rows="5"></textarea>
     <input type="submit" value="Tweet!">
   </form>
   <div class="feed">
     <h2>Your Twitter Feed:</h2>
-    {% for tweet in tweets %}
-      <div class="tweet">
-        <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
-        <p>{{ tweet.content }}</p>
-        <h4>{{ tweet.users_liked.count }}</h4>
-        {% if user in tweet.users_liked.all %}
-          <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
-        {% else %}
-          <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
-        {% endif %}
-      </div>
-    {% endfor %}
+    <div id="tweets">
+      {% for tweet in tweets %}
+        <div class="tweet">
+          <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
+          <p>{{ tweet.content }}</p>
+          <h4>{{ tweet.users_liked.count }}</h4>
+          {% if user in tweet.users_liked.all %}
+            <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
+          {% else %}
+            <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 {% endblock %}

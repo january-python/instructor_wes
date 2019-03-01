@@ -15,7 +15,7 @@ class TweetManager(models.Manager):
 
     def easy_create(self, form, user_id):
         user = User.objects.get(id=user_id)
-        Tweet.objects.create(
+        return Tweet.objects.create(
             content=form['content'],
             creator=user
         )

@@ -1,0 +1,10 @@
+<div class="tweet">
+  <h3><a href="{% url 'tweets:show' tweet.creator.id %}">@{{ tweet.creator.username }}</a></h3>
+  <p>{{ tweet.content }}</p>
+  <h4>{{ tweet.users_liked.count }}</h4>
+  {% if user in tweet.users_liked.all %}
+  <a href="{% url 'tweets:unlike' tweet.id %}" class="button">Unlike</a>
+  {% else %}
+  <a href="{% url 'tweets:like' tweet.id %}" class="button">Like</a>
+  {% endif %}
+</div>
